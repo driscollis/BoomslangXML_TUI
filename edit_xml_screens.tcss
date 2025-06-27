@@ -1,0 +1,12 @@
+EditXMLScreen {
+    Input {
+        border: solid gold;
+        margin: 1;
+    }
+    Button {
+        align: center middle;
+    }
+    Horizontal {
+        margin: 1;
+    }
+}

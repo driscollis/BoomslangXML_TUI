@@ -8,6 +8,7 @@ class BoomslangXML(App):
         ("ctrl+o", "open", "Open XML File"),
     ]
 
+
     def __init__(self) -> None:
         super().__init__()
         self.title = "Boomslang XML"

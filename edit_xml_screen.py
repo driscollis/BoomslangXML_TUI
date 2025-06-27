@@ -2,9 +2,9 @@ import lxml.etree as ET
 
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
+from textual.containers import Center, Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
-from textual.widgets import Button, Footer, Header, Label, Input, Tree
+from textual.widgets import Button, Footer, Header, Input, Tree
 
 class DataInput(Input):
     """
@@ -21,6 +21,7 @@ class EditXMLScreen(ModalScreen):
         ("ctrl+s", "save", "Save"),
         ("escape", "esc", "Exit dialog"),
     ]
+    CSS_PATH = "edit_xml_screens.tcss"
 
     def __init__(self, xml_path: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,8 +38,10 @@ class EditXMLScreen(ModalScreen):
                 Tree("No Data Loaded", id="xml_tree"),
                 id="left_pane"
             ),
-            Vertical(
-                Button("Add Node", id="add_node"),
+            VerticalScroll(
+                Center(
+                    Button("Add Node", id="add_node", variant="primary"),
+                ),
                 id="right_pane"
             ),
             id="main_ui_container"
@@ -72,7 +75,7 @@ class EditXMLScreen(ModalScreen):
         """
         xml_obj = event.node.data
         self.notify(f"{xml_obj} is selected")
-        right_pane = self.query_one("#right_pane", Vertical)
+        right_pane = self.query_one("#right_pane", VerticalScroll)
         right_pane.remove_children()
 
         if xml_obj is not None:
@@ -80,22 +83,24 @@ class EditXMLScreen(ModalScreen):
                 if child.getchildren():
                     continue
                 text = child.text if child.text else ''
+                data_input = DataInput(child, text)
+                data_input.border_title = child.tag
                 container = Horizontal(
-                    Label(child.tag),
-                    DataInput(child, text)
+                    data_input
                 )
                 right_pane.mount(container)
             else:
                 # XML object has no children, so just show the tag and text
                 if getattr(xml_obj, 'tag') and getattr(xml_obj, 'text'):
                     if xml_obj.getchildren() == []:
+                        data_input = DataInput(xml_obj, xml_obj.text)
+                        data_input.border_title = xml_obj.tag
                         container = Horizontal(
-                            Label(xml_obj.tag),
-                            DataInput(xml_obj, xml_obj.text)
+                            data_input
                         )
                         right_pane.mount(container)
 
-        right_pane.mount(Button("Add Node"))
+        right_pane.mount(Center(Button("Add Node", variant="primary")))
 
     @on(Input.Changed)
     def on_input_changed(self, event: Input.Changed) -> None:
