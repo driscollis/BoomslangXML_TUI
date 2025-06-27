@@ -19,6 +19,7 @@ class BoomslangXML(App):
     def __init__(self) -> None:
         super().__init__()
         self.expanded = {}
+        self.xml_tree = ET.parse("books.xml")
 
     def compose(self) -> ComposeResult:
         xml_tree = ET.parse("books.xml")
@@ -102,8 +103,7 @@ class BoomslangXML(App):
         Load the XML tree UI with data parsed from the XML file
         """
         tree = self.query_one("#xml_tree", Tree)
-        xml_tree = ET.parse("books.xml")
-        xml_root = xml_tree.getroot()
+        xml_root = self.xml_tree.getroot()
         self.expanded[id(xml_root)] = ''
 
         tree.reset(xml_root.tag)
