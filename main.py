@@ -6,6 +6,9 @@ from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, Label, Input, Tree
 
 class DataInput(Input):
+    """
+    Create a variant of the Input widget that stores data
+    """
 
     def __init__(self, xml_obj: ET.Element, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -38,6 +41,10 @@ class BoomslangXML(App):
 
     @on(Tree.NodeExpanded)
     def on_tree_node_expanded(self, event: Tree.NodeExpanded) -> None:
+        """
+        When a tree node is expanded, parse the newly shown leaves and make
+        them expandable, if necessary.
+        """
         xml_obj = event.node.data
         if id(xml_obj) not in self.expanded and xml_obj is not None:
             for top_level_item in xml_obj.getchildren():
@@ -50,6 +57,10 @@ class BoomslangXML(App):
 
     @on(Tree.NodeSelected)
     def on_tree_node_selected(self, event: Tree.NodeSelected) -> None:
+        """
+        When a node in the tree control is selected, update the right pane to show
+        the data in the XML, if any
+        """
         xml_obj = event.node.data
         self.notify(f"{xml_obj} is selected")
         right_pane = self.query_one("#right_pane", Vertical)
@@ -87,6 +98,9 @@ class BoomslangXML(App):
         xml_obj.text = event.input.value
 
     def load_tree(self) -> None:
+        """
+        Load the XML tree UI with data parsed from the XML file
+        """
         tree = self.query_one("#xml_tree", Tree)
         xml_tree = ET.parse("books.xml")
         xml_root = xml_tree.getroot()
