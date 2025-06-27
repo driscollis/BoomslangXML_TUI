@@ -3,7 +3,7 @@ import lxml.etree as ET
 from textual import on
 from textual.app import App, ComposeResult
 from textual.containers import Vertical, Horizontal
-from textual.widgets import Button, Label, Input, Tree
+from textual.widgets import Button, Footer, Header, Label, Input, Tree
 
 class DataInput(Input):
     """
@@ -23,11 +23,13 @@ class BoomslangXML(App):
         super().__init__()
         self.expanded = {}
         self.xml_tree = ET.parse("books.xml")
+        self.title = "Boomslang XML"
 
     def compose(self) -> ComposeResult:
         xml_tree = ET.parse("books.xml")
         xml_root = xml_tree.getroot()
         self.expanded[id(xml_root)] = ''
+        yield Header()
         yield Horizontal(
             Vertical(
                 Tree("No Data Loaded", id="xml_tree"),
@@ -39,6 +41,7 @@ class BoomslangXML(App):
             ),
             id="main_ui_container"
         )
+        yield Footer()
 
     def on_mount(self) -> None:
         self.load_tree()
