@@ -5,6 +5,12 @@ from textual.app import App, ComposeResult
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, Label, Input, Tree
 
+class DataInput(Input):
+
+    def __init__(self, xml_obj: ET.Element, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.xml_obj = xml_obj
+
 class BoomslangXML(App):
 
     def __init__(self) -> None:
@@ -56,7 +62,7 @@ class BoomslangXML(App):
                 text = child.text if child.text else ''
                 container = Horizontal(
                     Label(child.tag),
-                    Input(text)
+                    DataInput(child, text)
                 )
                 right_pane.mount(container)
             else:
@@ -65,11 +71,20 @@ class BoomslangXML(App):
                     if xml_obj.getchildren() == []:
                         container = Horizontal(
                             Label(xml_obj.tag),
-                            Input(xml_obj.text)
+                            DataInput(xml_obj, xml_obj.text)
                         )
                         right_pane.mount(container)
 
         right_pane.mount(Button("Add Node"))
+
+    @on(Input.Changed)
+    def on_input_changed(self, event: Input.Changed) -> None:
+        """
+        When an XML element changes, update the XML object
+        """
+        xml_obj = event.input.xml_obj
+        # self.notify(f"{xml_obj.text} is changed to new value: {event.input.value}")
+        xml_obj.text = event.input.value
 
     def load_tree(self) -> None:
         tree = self.query_one("#xml_tree", Tree)
