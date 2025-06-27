@@ -15,6 +15,9 @@ class DataInput(Input):
         self.xml_obj = xml_obj
 
 class BoomslangXML(App):
+    BINDINGS = [
+        ("ctrl+s", "save", "Save"),
+    ]
 
     def __init__(self) -> None:
         super().__init__()
@@ -97,6 +100,10 @@ class BoomslangXML(App):
         xml_obj = event.input.xml_obj
         # self.notify(f"{xml_obj.text} is changed to new value: {event.input.value}")
         xml_obj.text = event.input.value
+
+    def action_save(self):
+        self.xml_tree.write(r"C:\Temp\books.xml")
+        self.notify("Saved!")
 
     def load_tree(self) -> None:
         """
