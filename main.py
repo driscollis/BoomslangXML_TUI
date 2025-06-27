@@ -1,6 +1,4 @@
-import lxml.etree as ET
-
-from EditXMLScreen import EditXMLScreen
+from edit_xml_screen import EditXMLScreen
 
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer
