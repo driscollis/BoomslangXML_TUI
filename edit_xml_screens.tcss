@@ -1,5 +1,4 @@
 EditXMLScreen {
-
     Input {
         border: solid gold;
         margin: 1;

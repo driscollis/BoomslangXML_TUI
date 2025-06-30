@@ -1,10 +1,13 @@
 import lxml.etree as ET
 
+from add_node_screen import AddNodeScreen
+
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
 from textual.widgets import Footer, Header, Input, Tree
+from textual.widgets._tree import TreeNode
 
 class DataInput(Input):
     """
@@ -28,6 +31,7 @@ class EditXMLScreen(ModalScreen):
         super().__init__(*args, **kwargs)
         self.xml_tree = ET.parse("books.xml")
         self.expanded = {}
+        self.selected_tree_node: None | TreeNode = None
 
     def compose(self) -> ComposeResult:
         xml_tree = ET.parse("books.xml")
@@ -75,6 +79,7 @@ class EditXMLScreen(ModalScreen):
         self.notify(f"{xml_obj} is selected")
         right_pane = self.query_one("#right_pane", VerticalScroll)
         right_pane.remove_children()
+        self.selected_tree_node = event.node
 
         if xml_obj is not None:
             for child in xml_obj.getchildren():
@@ -98,8 +103,6 @@ class EditXMLScreen(ModalScreen):
                         )
                         right_pane.mount(container)
 
-
-
     @on(Input.Changed)
     def on_input_changed(self, event: Input.Changed) -> None:
         """
@@ -114,6 +117,20 @@ class EditXMLScreen(ModalScreen):
         Close the dialog when the user presses ESC
         """
         self.dismiss()
+
+    def action_add_node(self) -> None:
+        """
+        Add another node to the XML tree and the UI
+        """
+        # Show dialog and use callback to update XML and UI
+        def add_node(result: tuple[str, str] | None) -> None:
+            if result is not None:
+                self.notify(f"{result = }")
+                node_name, node_value = result
+                self.update_xml_tree(node_name, node_value)
+
+        self.app.push_screen(AddNodeScreen(), add_node)
+
 
     def action_save(self):
         self.xml_tree.write(r"C:\Temp\books.xml")
@@ -138,3 +155,18 @@ class EditXMLScreen(ModalScreen):
                     child.allow_expand = True
                 else:
                     child.allow_expand = False
+
+    def update_tree_nodes(self, node_name: str, node: ET.SubElement) -> None:
+        """
+        When adding a new node, update the UI Tree element to reflect the new element added
+        """
+        child = self.selected_tree_node.add(node_name, data=node)
+        child.allow_expand = False
+
+    def update_xml_tree(self, node_name: str, node_value: str) -> None:
+        """
+        When adding a new node, update the XML object with the new element
+        """
+        element = ET.SubElement(self.selected_tree_node.data, node_name)
+        element.text = node_value
+        self.update_tree_nodes(node_name, element)
