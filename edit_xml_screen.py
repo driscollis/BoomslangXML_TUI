@@ -2,9 +2,9 @@ import lxml.etree as ET
 
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Center, Horizontal, Vertical, VerticalScroll
+from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
-from textual.widgets import Button, Footer, Header, Input, Tree
+from textual.widgets import Footer, Header, Input, Tree
 
 class DataInput(Input):
     """
@@ -19,6 +19,7 @@ class DataInput(Input):
 class EditXMLScreen(ModalScreen):
     BINDINGS = [
         ("ctrl+s", "save", "Save"),
+        ("ctrl+a", "add_node", "Add Node"),
         ("escape", "esc", "Exit dialog"),
     ]
     CSS_PATH = "edit_xml_screens.tcss"
@@ -39,9 +40,6 @@ class EditXMLScreen(ModalScreen):
                 id="left_pane"
             ),
             VerticalScroll(
-                Center(
-                    Button("Add Node", id="add_node", variant="primary"),
-                ),
                 id="right_pane"
             ),
             id="main_ui_container"
@@ -100,7 +98,7 @@ class EditXMLScreen(ModalScreen):
                         )
                         right_pane.mount(container)
 
-        right_pane.mount(Center(Button("Add Node", variant="primary")))
+
 
     @on(Input.Changed)
     def on_input_changed(self, event: Input.Changed) -> None:
