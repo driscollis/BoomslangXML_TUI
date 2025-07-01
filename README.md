@@ -2,6 +2,10 @@
 
 Boomslang XML is an XML editor in your Terminal.
 
+## Screenshots
+
+![boomxml_tui](https://github.com/user-attachments/assets/aee35314-f01e-4597-ba8a-caec2f2cd6a7)
+
 ## Prerequisites
 
 The instructions assume you have uv or pip installed.
