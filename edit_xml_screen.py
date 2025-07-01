@@ -1,6 +1,9 @@
 import lxml.etree as ET
+import tempfile
+from pathlib import Path
 
 from add_node_screen import AddNodeScreen
+from preview_xml_screen import PreviewXMLScreen
 
 from textual import on
 from textual.app import ComposeResult
@@ -23,6 +26,7 @@ class EditXMLScreen(ModalScreen):
     BINDINGS = [
         ("ctrl+s", "save", "Save"),
         ("ctrl+a", "add_node", "Add Node"),
+        ("p", "preview", "Preview"),
         ("escape", "esc", "Exit dialog"),
     ]
     CSS_PATH = "edit_xml_screens.tcss"
@@ -76,7 +80,6 @@ class EditXMLScreen(ModalScreen):
         the data in the XML, if any
         """
         xml_obj = event.node.data
-        self.notify(f"{xml_obj} is selected")
         right_pane = self.query_one("#right_pane", VerticalScroll)
         right_pane.remove_children()
         self.selected_tree_node = event.node
@@ -125,14 +128,18 @@ class EditXMLScreen(ModalScreen):
         # Show dialog and use callback to update XML and UI
         def add_node(result: tuple[str, str] | None) -> None:
             if result is not None:
-                self.notify(f"{result = }")
                 node_name, node_value = result
                 self.update_xml_tree(node_name, node_value)
 
         self.app.push_screen(AddNodeScreen(), add_node)
 
+    def action_preview(self) -> None:
+        temp_directory = Path(tempfile.gettempdir())
+        xml_path = temp_directory / "temp.xml"
+        self.xml_tree.write(xml_path)
+        self.app.push_screen(PreviewXMLScreen(xml_path))
 
-    def action_save(self):
+    def action_save(self) -> None:
         self.xml_tree.write(r"C:\Temp\books.xml")
         self.notify("Saved!")
 
