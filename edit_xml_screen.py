@@ -12,6 +12,7 @@ from textual.screen import ModalScreen
 from textual.widgets import Footer, Header, Input, Tree
 from textual.widgets._tree import TreeNode
 
+
 class DataInput(Input):
     """
     Create a variant of the Input widget that stores data
@@ -40,17 +41,12 @@ class EditXMLScreen(ModalScreen):
     def compose(self) -> ComposeResult:
         xml_tree = ET.parse("books.xml")
         xml_root = xml_tree.getroot()
-        self.expanded[id(xml_root)] = ''
+        self.expanded[id(xml_root)] = ""
         yield Header()
         yield Horizontal(
-            Vertical(
-                Tree("No Data Loaded", id="xml_tree"),
-                id="left_pane"
-            ),
-            VerticalScroll(
-                id="right_pane"
-            ),
-            id="main_ui_container"
+            Vertical(Tree("No Data Loaded", id="xml_tree"), id="left_pane"),
+            VerticalScroll(id="right_pane"),
+            id="main_ui_container",
         )
         yield Footer()
 
@@ -71,7 +67,7 @@ class EditXMLScreen(ModalScreen):
                     child.allow_expand = True
                 else:
                     child.allow_expand = False
-            self.expanded[id(xml_obj)] = ''
+            self.expanded[id(xml_obj)] = ""
 
     @on(Tree.NodeSelected)
     def on_tree_node_selected(self, event: Tree.NodeSelected) -> None:
@@ -88,22 +84,18 @@ class EditXMLScreen(ModalScreen):
             for child in xml_obj.getchildren():
                 if child.getchildren():
                     continue
-                text = child.text if child.text else ''
+                text = child.text if child.text else ""
                 data_input = DataInput(child, text)
                 data_input.border_title = child.tag
-                container = Horizontal(
-                    data_input
-                )
+                container = Horizontal(data_input)
                 right_pane.mount(container)
             else:
                 # XML object has no children, so just show the tag and text
-                if getattr(xml_obj, 'tag') and getattr(xml_obj, 'text'):
+                if getattr(xml_obj, "tag") and getattr(xml_obj, "text"):
                     if xml_obj.getchildren() == []:
                         data_input = DataInput(xml_obj, xml_obj.text)
                         data_input.border_title = xml_obj.tag
-                        container = Horizontal(
-                            data_input
-                        )
+                        container = Horizontal(data_input)
                         right_pane.mount(container)
 
     @on(Input.Changed)
@@ -125,6 +117,7 @@ class EditXMLScreen(ModalScreen):
         """
         Add another node to the XML tree and the UI
         """
+
         # Show dialog and use callback to update XML and UI
         def add_node(result: tuple[str, str] | None) -> None:
             if result is not None:
@@ -149,7 +142,7 @@ class EditXMLScreen(ModalScreen):
         """
         tree = self.query_one("#xml_tree", Tree)
         xml_root = self.xml_tree.getroot()
-        self.expanded[id(xml_root)] = ''
+        self.expanded[id(xml_root)] = ""
 
         tree.reset(xml_root.tag)
         tree.root.expand()

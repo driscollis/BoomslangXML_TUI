@@ -1,4 +1,3 @@
-
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
@@ -22,10 +21,8 @@ class PreviewXMLScreen(ModalScreen):
         yield Header()
         yield Vertical(
             text_area,
-            Center(
-                Button("Exit Preview", id="exit_preview", variant="primary")
-            ),
-            id="exit_preview_ui"
+            Center(Button("Exit Preview", id="exit_preview", variant="primary")),
+            id="exit_preview_ui",
         )
 
     @on(Button.Pressed, "#exit_preview")

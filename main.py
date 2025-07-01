@@ -3,11 +3,11 @@ from edit_xml_screen import EditXMLScreen
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer
 
+
 class BoomslangXML(App):
     BINDINGS = [
         ("ctrl+o", "open", "Open XML File"),
     ]
-
 
     def __init__(self) -> None:
         super().__init__()
