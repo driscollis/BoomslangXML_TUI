@@ -52,7 +52,7 @@ Issues = "https://github.com/driscollis/BoomslangXML_TUI/issues"
 exclude = ["__init__.py"]
 
 [project.scripts]
-squall = "boomslang.boomslang:main"
+boomslang = "boomslang.boomslang:main"
 
 [build-system]
 requires = [
