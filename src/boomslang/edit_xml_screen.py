@@ -39,8 +39,7 @@ class EditXMLScreen(ModalScreen):
         self.selected_tree_node: None | TreeNode = None
 
     def compose(self) -> ComposeResult:
-        xml_tree = ET.parse("books.xml")
-        xml_root = xml_tree.getroot()
+        xml_root = self.xml_tree.getroot()
         self.expanded[id(xml_root)] = ""
         yield Header()
         yield Horizontal(
