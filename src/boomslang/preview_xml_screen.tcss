@@ -1,0 +1,5 @@
+PreviewXMLScreen {
+    Button {
+        margin: 1;
+    }
+}
