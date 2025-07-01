@@ -1,0 +1,107 @@
+[project]
+name = "BoomslangXML_TUI"
+version = "0.0.1"
+authors = [
+  { name="Mike Driscoll", email="mike@pythonlibrary.org" },
+]
+maintainers = [
+    { name = "Mike Driscoll", email = "mike@pythonlibrary.org" },
+]
+description = "XML Parser in your terminal"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+
+keywords = [
+    "tui",
+    "xml",
+    "terminal",
+]
+
+dependencies = [
+    "lxml>=13.9.4",
+    "textual>=2.1.1",
+]
+
+packages = [
+    "src/boomslang",
+]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/driscollis/BoomslangXML_TUI"
+Issues = "https://github.com/driscollis/BoomslangXML_TUI/issues"
+
+[tool.ruff]
+exclude = ["__init__.py"]
+
+[project.scripts]
+squall = "boomslang.boomslang:main"
+
+[build-system]
+requires = [
+    "hatchling",
+    "wheel",
+]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "build>=1.2.1",
+    "ruff>=0.9.3",
+    "pyinstrument>=5.0.1",
+    "textual-dev>=1.7.0",
+]
+
+[tool.hatch.version]
+path = "src/boomslang/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/boomslang",
+]
+include = [
+    "py.typed",
+    "**/*.py",
+    "**/*.html",
+    "**/*.gif",
+    "**/*.jpg",
+    "**/*.png",
+    "**/*.md",
+    "**/*.tcss",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/boomslang",
+    "LICENSE",
+    "README.md",
+    "pyproject.toml",
+]
+exclude = [
+    "*.pyc",
+    "__pycache__",
+    "*.so",
+    "*.dylib",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
