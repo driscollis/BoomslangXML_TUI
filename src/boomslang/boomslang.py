@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from edit_xml_screen import EditXMLScreen
-from file_browser_screen import FileBrowser
+from .edit_xml_screen import EditXMLScreen
+from .file_browser_screen import FileBrowser
 
 from textual import on
 from textual.app import App, ComposeResult

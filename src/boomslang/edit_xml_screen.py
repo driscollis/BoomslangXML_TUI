@@ -2,8 +2,8 @@ import lxml.etree as ET
 import tempfile
 from pathlib import Path
 
-from add_node_screen import AddNodeScreen
-from preview_xml_screen import PreviewXMLScreen
+from .add_node_screen import AddNodeScreen
+from .preview_xml_screen import PreviewXMLScreen
 
 from textual import on
 from textual.app import ComposeResult
