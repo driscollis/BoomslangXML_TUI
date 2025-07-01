@@ -84,7 +84,9 @@ class BoomslangXML(App):
             with open(self.recent_files_path, mode="a") as f:
                 f.write(str(path) + "\n")
 
-
-if __name__ == "__main__":
+def main() -> None:
     app = BoomslangXML()
     app.run()
+
+if __name__ == "__main__":
+    main()
