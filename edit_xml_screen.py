@@ -32,9 +32,9 @@ class EditXMLScreen(ModalScreen):
     ]
     CSS_PATH = "edit_xml_screens.tcss"
 
-    def __init__(self, xml_path: str, *args, **kwargs):
+    def __init__(self, xml_path: Path, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.xml_tree = ET.parse("books.xml")
+        self.xml_tree = ET.parse(xml_path)
         self.expanded = {}
         self.selected_tree_node: None | TreeNode = None
 
