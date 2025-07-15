@@ -1,5 +1,7 @@
 # BoomslangXML
 
+[![Framework: Textual](https://img.shields.io/badge/framework-Textual-5967FF?logo=python)](https://www.textualize.io/)
+
 Boomslang XML is an XML editor in your Terminal.
 
 ## Screenshots
