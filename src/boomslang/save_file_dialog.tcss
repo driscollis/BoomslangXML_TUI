@@ -1,0 +1,14 @@
+SaveFileDialog {
+    #save_dialog {
+            width: 80%;
+            height: 50%;
+            border: thick $background 70%;
+            content-align: center middle;
+            margin: 2;
+            border: solid green;
+        }
+    Button {
+        margin: 1;
+        content-align: center middle;
+    }
+}
