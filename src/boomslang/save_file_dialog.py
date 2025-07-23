@@ -8,7 +8,6 @@ from textual.widgets import Button, DirectoryTree, Footer, Header, Input, Label
 
 
 class SaveFileDialog(Screen):
-
     CSS_PATH = "save_file_dialog.tcss"
 
     def __init__(self) -> None:
