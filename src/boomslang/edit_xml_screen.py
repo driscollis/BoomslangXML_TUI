@@ -4,6 +4,7 @@ from pathlib import Path
 
 from .add_node_screen import AddNodeScreen
 from .preview_xml_screen import PreviewXMLScreen
+from .save_file_dialog import SaveFileDialog
 
 from textual import on
 from textual.app import ComposeResult
@@ -103,8 +104,15 @@ class EditXMLScreen(ModalScreen):
         When an XML element changes, update the XML object
         """
         xml_obj = event.input.xml_obj
-        # self.notify(f"{xml_obj.text} is changed to new value: {event.input.value}")
         xml_obj.text = event.input.value
+
+    def on_save_file_dialog_dismissed(self, xml_path: str) -> None:
+        """
+        Save the file to the selected location
+        """
+        if not Path(xml_path).exists():
+            self.xml_tree.write(xml_path)
+            self.notify(f"Saved to: {xml_path}")
 
     def action_esc(self) -> None:
         """
@@ -132,8 +140,7 @@ class EditXMLScreen(ModalScreen):
         self.app.push_screen(PreviewXMLScreen(xml_path))
 
     def action_save(self) -> None:
-        self.xml_tree.write(r"C:\Temp\books.xml")
-        self.notify("Saved!")
+        self.app.push_screen(SaveFileDialog(), self.on_save_file_dialog_dismissed)
 
     def load_tree(self) -> None:
         """
